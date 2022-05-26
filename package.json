@@ -4,7 +4,9 @@
   "description": "Manage your tasks",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/init.js"
+    "server": "nodemon --exec babel-node server/init.js",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -17,8 +19,12 @@
   },
   "homepage": "https://github.com/ywl0806/todo-list#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "concurrently": "^7.2.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "mongoose": "^6.3.4"
   },
   "devDependencies": {
     "@babel/core": "^7.18.0",
