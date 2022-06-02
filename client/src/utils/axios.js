@@ -2,8 +2,8 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-export const request = (method, url, data) => {
-  return axios({
+export const request = async (method, url, data) => {
+  return await axios({
     method,
     url: url,
     data,

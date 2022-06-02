@@ -1,18 +1,22 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addTask } from "../reducers/taskSlice";
 import { request } from "../utils/axios";
 
 const CreateTask = () => {
   const [title, setTitle] = useState("");
   const handleTitle = (e) => setTitle(e.target.value);
+
   const [content, setContent] = useState("");
   const handleContent = (e) => setContent(e.target.value);
+
   const now = new Date(
     new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000
   );
-
   const [deadLine, setDeadLine] = useState(now.toISOString().slice(0, 16));
   const handleDeadLine = (e) => setDeadLine(e.target.value);
 
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -22,6 +26,7 @@ const CreateTask = () => {
         content,
         deadLine,
       });
+      dispatch(addTask(res));
       console.log(res);
     } catch (error) {
       console.log(error);

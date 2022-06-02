@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import CreateTask from "../components/CreateTask";
+import TodoList from "../components/TodoList";
 import Login from "./Login";
 
 const Home = () => {
@@ -9,8 +9,21 @@ const Home = () => {
   return (
     <div>
       <h3> Home </h3>
-      {user.loggedIn ? <h1>{user.name}님 환영합니다!!</h1> : <Login />}
-      {user.loggedIn ? <CreateTask /> : null}
+      <div>
+        {user.loggedIn ? <h1>{user.name}님 환영합니다!!</h1> : <Login />}
+        {user.loggedIn ? (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateRows: "400px 400px",
+              gridTemplateColumns: "400px 400px",
+            }}
+          >
+            <CreateTask />
+            <TodoList />
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 };

@@ -8,7 +8,11 @@ const TaskSchema = new mongoose.Schema({
   deadLine: { type: Date },
   isRemoved: { type: Boolean, default: false },
   isCompleted: { type: Boolean, default: false },
-  writer: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  writer: {
+    _id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    name: { type: String, ref: "User.name" },
+    avatar_url: { type: String, ref: "User.avatar_url" },
+  },
 });
 
 const db = mongoose.model("Task", TaskSchema);
