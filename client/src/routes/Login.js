@@ -3,60 +3,70 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../reducers/sessionSlice";
 import { request } from "../utils/axios";
+import { useFormik } from "formik";
+import { loginSchema } from "../utils/validationSchema";
 
 const Login = () => {
   const navigete = useNavigate();
-
-  const [email, setEmail] = useState("");
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-  };
   const dispatch = useDispatch();
 
-  const [password, setPassword] = useState("");
-  const handlePassword = (e) => setPassword(e.target.value);
-
-  const onSubmit = async () => {
-    const loginUrl = "/user/login";
-    const data = { email, password };
-    try {
-      const payload = await request("post", loginUrl, data);
-      console.log(payload.user);
-      dispatch(setUser(payload.user));
-      //ログイン成功時
-      navigete("/");
-    } catch (error) {
-      //ログイン失敗時
-      console.log(error);
-    }
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    loginSchema,
+    onSubmit: async (data) => {
+      const loginUrl = "/user/login";
+      try {
+        const payload = await request("post", loginUrl, data);
+        console.log(payload.user);
+        dispatch(setUser(payload.user));
+        //ログイン成功時
+        navigete("/");
+      } catch (error) {
+        //ログイン失敗時
+        console.log(error);
+      }
+    },
+  });
 
   return (
     <div>
       <h3> Login </h3>
-      <div>
-        <label htmlFor="email">Email </label>
-        <input
-          onChange={handleEmail}
-          id="email"
-          type="email"
-          placeholder="email"
-          value={email}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">password </label>
-        <input
-          onChange={handlePassword}
-          id="password"
-          type="password"
-          placeholder="password"
-          value={password}
-        />
-      </div>
-      <div>
-        <button onClick={onSubmit}>submit</button>
-      </div>
+      <form onSubmit={formik.handleSubmit}>
+        <div>
+          <label htmlFor="email">Email </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            {...formik.getFieldProps("email")}
+          />
+          {formik.touched.email && formik.errors.email && (
+            <span role="alert">{formik.errors.email}</span>
+          )}
+        </div>
+        <div>
+          <label htmlFor="password">password </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            {...formik.getFieldProps("password")}
+          />
+          {formik.touched.password && formik.errors.password && (
+            <span role="alert">{formik.errors.password}</span>
+          )}
+        </div>
+        <div>
+          <button type="submit">submit</button>
+        </div>
+      </form>
     </div>
   );
 };

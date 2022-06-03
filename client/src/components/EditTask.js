@@ -7,6 +7,7 @@ const EditTask = () => {
   const currentUserId = useSelector((state) => state.persist.session._id);
   const task = useSelector((state) => state.task.currentTaskDetail);
   const dispatch = useDispatch();
+
   //states
   const [title, setTitle] = useState(task.title);
   const handleTitle = (e) => setTitle(e.target.value);
@@ -19,7 +20,9 @@ const EditTask = () => {
       new Date().getTimezoneOffset() * 60 * 1000
   );
 
-  const [deadLine, setDeadLine] = useState(date.toISOString().slice(0, 16));
+  const [deadLine, setDeadLine] = useState(
+    task.deadLine === null ? null : date.toISOString().slice(0, 16)
+  );
   const handleDeadLine = (e) => setDeadLine(e.target.value);
 
   const [isCompleted, setIsCompleted] = useState(task.isCompleted);
@@ -57,6 +60,7 @@ const EditTask = () => {
             type="text"
             placeholder="title"
             value={title}
+            maxLength="64"
           />
         </div>
         <div>
