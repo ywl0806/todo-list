@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../reducers/sessionSlice";
@@ -15,7 +14,7 @@ const Login = () => {
       email: "",
       password: "",
     },
-    loginSchema,
+    validationSchema: loginSchema,
     onSubmit: async (data) => {
       const loginUrl = "/user/login";
       try {

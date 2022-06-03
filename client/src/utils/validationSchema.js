@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const joinSchema = yup.object({
+export const joinSchema = yup.object().shape({
   email: yup
     .string()
     .email("Emailを入力してください")
@@ -27,7 +27,7 @@ export const joinSchema = yup.object({
     .max(64, "64文字以内で入力してください。")
     .required("入力が必要です。"),
 });
-export const loginSchema = yup.object({
+export const loginSchema = yup.object().shape({
   email: yup
     .string()
     .email("Emailを入力してください")
@@ -43,7 +43,7 @@ export const loginSchema = yup.object({
     .required("パスワードの入力が必要です。"),
 });
 
-export const taskSchema = yup.object({
+export const taskSchema = yup.object().shape({
   title: yup
     .string()
     .max(64, "64文字以内で入力してください。")

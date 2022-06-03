@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import { joinSchema } from "../utils/validationSchema";
 const Join = () => {
   const navigate = useNavigate();
-
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -12,7 +11,7 @@ const Join = () => {
       password: "",
       passwordConfirm: "",
     },
-    joinSchema,
+    validationSchema: joinSchema,
     onSubmit: async (values) => {
       try {
         const result = await request("post", "/user/join", values);

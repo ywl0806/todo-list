@@ -13,7 +13,7 @@ const CreateTask = () => {
       content: "",
       deadLine: "",
     },
-    taskSchema,
+    validationSchema: taskSchema,
     onSubmit: async (values) => {
       try {
         const res = await request("post", "/task/createTask", values);
