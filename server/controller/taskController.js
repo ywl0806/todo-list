@@ -32,8 +32,8 @@ export const todoList = async (req, res) => {
         { deadLine: deadLineOverdue ? { $lt: Date.now() } : { $ne: 1 } },
         {
           $or: [
-            { title: { $regex: keyword } },
-            { content: { $regex: keyword } },
+            { title: { $regex: keyword || "" } },
+            { content: { $regex: keyword || "" } },
           ],
         },
       ],

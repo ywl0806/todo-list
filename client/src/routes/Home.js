@@ -10,9 +10,7 @@ import Login from "./Login";
 const Home = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.persist.session);
-  const [onCreateTask, setOnCreateTask] = useState(false);
   const onClickPlusBtn = () => {
-    setOnCreateTask(true);
     dispatch(modeChange("create"));
     dispatch(unSelectTask());
   };

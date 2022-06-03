@@ -16,6 +16,9 @@ const TodoList = () => {
   const [deadLineOverdue, setDeadLineOverdue] = useState(false);
   const handleDeadLineOverdue = () => setDeadLineOverdue(!deadLineOverdue);
 
+  //検索keyword
+  const [keyword, setKeyword] = useState("");
+  const handleKeyword = (e) => setKeyword(e.target.value);
   //現在のtask list
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
@@ -27,6 +30,7 @@ const TodoList = () => {
       const payload = await request("post", "/task/todolist", {
         isCompleted,
         deadLineOverdue,
+        keyword,
       });
       dispatch(setTask(payload));
     };
@@ -35,7 +39,7 @@ const TodoList = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [isCompleted, deadLineOverdue]);
+  }, [isCompleted, deadLineOverdue, keyword]);
 
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
@@ -69,7 +73,13 @@ const TodoList = () => {
     <div>
       <div>
         <label htmlFor="search">search </label>
-        <input id="search" type="search" placeholder="search for..."></input>
+        <input
+          id="search"
+          type="search"
+          value={keyword}
+          placeholder="search for..."
+          onChange={handleKeyword}
+        ></input>
       </div>
       <div>
         <label htmlFor="isCompleted">isCompleted</label>
