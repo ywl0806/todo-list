@@ -2,12 +2,10 @@ import User from "../model/User";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
-import querystring from "querystring";
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-
   if (!user) {
     console.log("email is not exists");
     return;
@@ -30,6 +28,7 @@ export const login = async (req, res) => {
     user: {
       name: user.name,
       email: user.email,
+      _id: user._id,
       avatarUrl: user.avater_url || "",
     },
   });
@@ -121,4 +120,5 @@ const sendMail = (email, mailText) => {
       console.log(`Email sent: ${info.response}`);
     }
   });
+  transpoter.close();
 };

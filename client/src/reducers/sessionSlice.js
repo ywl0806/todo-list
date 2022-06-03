@@ -15,6 +15,7 @@ export const sessionSlice = createSlice({
       state.email = action.payload.email;
       state.avatar_url = action.payload.avatar_url;
       state.loggedIn = true;
+      state._id = action.payload._id;
       return state;
     },
     logout: async (state) => {
@@ -23,6 +24,8 @@ export const sessionSlice = createSlice({
       state.name = "";
       state.email = "";
       state.avatar_url = "";
+      state._id = "";
+
       state.loggedIn = false;
       window.location.reload();
       return state;

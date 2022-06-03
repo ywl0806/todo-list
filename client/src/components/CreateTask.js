@@ -15,7 +15,6 @@ const CreateTask = () => {
   );
   const [deadLine, setDeadLine] = useState(now.toISOString().slice(0, 16));
   const handleDeadLine = (e) => setDeadLine(e.target.value);
-
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,6 +26,10 @@ const CreateTask = () => {
         deadLine,
       });
       dispatch(addTask(res));
+      //inputを初期化
+      setTitle("");
+      setContent("");
+      setDeadLine(now.toISOString().slice(0, 16));
       console.log(res);
     } catch (error) {
       console.log(error);
@@ -48,7 +51,7 @@ const CreateTask = () => {
         </div>
         <div>
           <label htmlFor="content">content </label>
-          <input
+          <textarea
             onChange={handleContent}
             id="content"
             type="text"
@@ -66,7 +69,7 @@ const CreateTask = () => {
           ></input>
         </div>
 
-        <button>전송</button>
+        <input type="submit" />
       </form>
     </div>
   );

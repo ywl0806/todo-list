@@ -21,7 +21,8 @@ export const todoList = async (req, res) => {
   if (!req.session.loggedIn) {
     return res.status(400);
   }
-  const user = req.session.user;
+  // const user = req.session.user;
+  // console.log(user);
   const { isCompleted, deadLineOverdue } = req.body;
   const taskList = await Task.find({
     isRemoved: false,
@@ -31,4 +32,26 @@ export const todoList = async (req, res) => {
     createAt: "desc",
   });
   return res.status(200).json(taskList);
+};
+export const editTask = async (req, res) => {
+  const { _id, title, content, deadLine, isCompleted } = req.body;
+  try {
+    const task = await Task.findByIdAndUpdate(
+      _id,
+      {
+        title,
+        content,
+        deadLine,
+        isCompleted,
+        updateAt: Date.now(),
+      },
+      { new: true }
+    );
+    console.log(`update complete`);
+    console.log(task);
+    return res.status(200).json(task);
+  } catch (error) {
+    console.log(error);
+  }
+  return;
 };
