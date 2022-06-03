@@ -23,15 +23,28 @@ export const todoList = async (req, res) => {
   }
   // const user = req.session.user;
   // console.log(user);
-  const { isCompleted, deadLineOverdue } = req.body;
-  const taskList = await Task.find({
-    isRemoved: false,
-    isCompleted,
-    deadLine: deadLineOverdue ? { $lt: Date.now() } : { $ne: 1 },
-  }).sort({
-    createAt: "desc",
-  });
-  return res.status(200).json(taskList);
+  const { isCompleted, deadLineOverdue, keyword } = req.body;
+  try {
+    const taskList = await Task.find({
+      $and: [
+        { isRemoved: false },
+        { isCompleted },
+        { deadLine: deadLineOverdue ? { $lt: Date.now() } : { $ne: 1 } },
+        {
+          $or: [
+            { title: { $regex: keyword } },
+            { content: { $regex: keyword } },
+          ],
+        },
+      ],
+    }).sort({
+      createAt: "desc",
+    });
+    return res.status(200).json(taskList);
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
 };
 export const editTask = async (req, res) => {
   const { _id, title, content, deadLine, isCompleted } = req.body;
