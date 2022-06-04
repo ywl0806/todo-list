@@ -3,7 +3,7 @@ import { addTask, selectTask } from "../reducers/taskSlice";
 import { request } from "../utils/axios";
 import { useFormik } from "formik";
 import { taskSchema } from "../utils/validationSchema";
-
+import "./TaskForm.css";
 const CreateTask = () => {
   const dispatch = useDispatch();
 
@@ -27,52 +27,71 @@ const CreateTask = () => {
   });
 
   return (
-    <div>
+    <div className="task-inputContainer">
       <form onSubmit={formik.handleSubmit}>
-        <div>
-          <label htmlFor="title">Title </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formik.values.title}
-            onChange={formik.handleChange}
-            {...formik.getFieldProps("title")}
-          />
+        <div className="form-group row task-inputbox">
+          <label className="col-sm-2 col-form-label" htmlFor="title">
+            タイトル
+          </label>
+          <div className="col-sm-10">
+            <input
+              className="form-control"
+              type="text"
+              id="title"
+              placeholder="タイトル"
+              value={formik.values.title}
+              onChange={formik.handleChange}
+              {...formik.getFieldProps("title")}
+            />
+          </div>
+
           {formik.touched.title && formik.errors.title && (
-            <span role="alert">{formik.errors.title}</span>
+            <small className="text-danger" role="alert">
+              {formik.errors.title}
+            </small>
           )}
         </div>
-        <div>
-          <label htmlFor="content">content </label>
-          <textarea
-            type="text"
-            id="content"
-            name="content"
-            value={formik.values.content}
-            onChange={formik.handleChange}
-            {...formik.getFieldProps("content")}
-          />
-          {formik.touched.content && formik.errors.content && (
-            <span role="alert">{formik.errors.content}</span>
-          )}
+
+        <div className="form-group row task-inputbox">
+          <label className="col-sm-2 col-form-label" htmlFor="content">
+            内容
+          </label>
+          <div className="col-sm-10">
+            <textarea
+              className="form-control"
+              id="content"
+              name="content"
+              rows="5"
+              value={formik.values.content}
+              onChange={formik.handleChange}
+              {...formik.getFieldProps("content")}
+            />
+          </div>
         </div>
-        <div>
-          <label htmlFor="deadLine">Dead Line </label>
-          <input
-            id="deadLine"
-            type="datetime-local"
-            name="deadLine"
-            value={formik.values.deadLine}
-            onChange={formik.handleChange}
-            {...formik.getFieldProps("deadLine")}
-          />
-          {formik.touched.deadLine && formik.errors.deadLine && (
-            <span role="alert">{formik.errors.deadLine}</span>
-          )}
+
+        <div className="form-group row task-inputbox">
+          <label className="col-sm-2 col-form-label" htmlFor="deadLine">
+            期限
+          </label>
+          <div className="col-sm-10">
+            <input
+              className="form-control"
+              id="deadLine"
+              type="datetime-local"
+              name="deadLine"
+              value={formik.values.deadLine}
+              onChange={formik.handleChange}
+              {...formik.getFieldProps("deadLine")}
+            />
+          </div>
         </div>
-        <div>
-          <button type="submit">submit</button>
+
+        <div className="form-group row task-inputbox justify-content-end">
+          <div className="col-sm-3">
+            <button className="btn btn-primary" type="submit">
+              追加
+            </button>
+          </div>
         </div>
       </form>
     </div>

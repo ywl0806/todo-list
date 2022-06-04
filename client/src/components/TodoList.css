@@ -1,0 +1,41 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  gap: 20px 6px;
+  margin-top: 20px;
+}
+
+.page-item,
+.page-link {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 10px;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  height: 30px;
+  width: 30px;
+}
+.task-row {
+  cursor: pointer;
+}
+.task-item {
+  margin-bottom: 1em;
+  padding-top: 12px;
+}
+.selected-task {
+  border-radius: 5px;
+  background-color: rgba(13, 109, 253, 0.397);
+  animation: fadein 0.5s;
+}
+@keyframes fadein {
+  from {
+    background-color: rgba(255, 255, 255, 0.445);
+  }
+  to {
+    border-radius: 5px;
+    background-color: rgba(13, 110, 253, 0.397);
+  }
+}

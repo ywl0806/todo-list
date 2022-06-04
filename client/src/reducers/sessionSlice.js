@@ -8,6 +8,7 @@ export const sessionSlice = createSlice({
     email: "",
     avatar_url: "",
     loggedIn: false,
+    welcome: true,
   },
   reducers: {
     setUser: (state, action) => {
@@ -25,14 +26,17 @@ export const sessionSlice = createSlice({
       state.email = "";
       state.avatar_url = "";
       state._id = "";
-
       state.loggedIn = false;
       window.location.reload();
+
       return state;
+    },
+    welcomeMessage: (state) => {
+      state.welcome = false;
     },
   },
 });
 
-export const { setUser, logout } = sessionSlice.actions;
+export const { setUser, logout, welcomeMessage } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

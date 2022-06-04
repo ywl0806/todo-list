@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { modeChange } from "../reducers/taskSlice";
+import { Button } from "react-bootstrap";
+import "./TaskDetail.css";
 const TaskDetail = () => {
   const dispatch = useDispatch();
   const currentTask = useSelector((state) => state.task.currentTaskDetail);
@@ -17,29 +19,41 @@ const TaskDetail = () => {
     return localDate;
   };
   return (
-    <div>
-      <div>
-        <div>
-          <h2>title: {currentTask.title}</h2>
-        </div>
-        <div>
-          <h2>content: {currentTask.content}</h2>
-        </div>
-        <div>
-          <h2>writer: {currentTask.writer.name}</h2>
-        </div>
-        <div>
-          <h2>완료됨?: {currentTask.isCompleted ? "yes" : "no"}</h2>
-        </div>
-        <div>
-          <h2>deadLine: {dateFormat(currentTask.deadLine)}</h2>
-        </div>
-        {currentTask.writer._id === currentUserId ? (
-          <div>
-            <button onClick={() => goEdit()}>Edit</button>
-          </div>
-        ) : null}
+    <div className="detail-container">
+      <div className="row">
+        <span className="col-3 item-title">ユーザー名</span>
+        <span className="col item-value">{currentTask.writer.name}</span>
       </div>
+      <div className="row">
+        <span className="col-3 item-title">タイトル</span>
+        <span className="col item-value">{currentTask.title}</span>
+      </div>
+      <div className="row row-content">
+        <span className="col-3 item-title">内容</span>
+        <span className="col item-value">{currentTask.content}</span>
+      </div>
+
+      <div className="row">
+        <span className="col-3 item-title">期限</span>
+        <span className="col item-value">
+          {currentTask.deadLine ? dateFormat(currentTask.deadLine) : "-"}
+        </span>
+      </div>
+      <div className="row row-comp justify-content-center">
+        {currentTask.isCompleted ? (
+          <span className="col-6 item-value complete">完了</span>
+        ) : (
+          <span className="col-6 item-value incomplete">未対応</span>
+        )}
+      </div>
+
+      {currentTask.writer._id === currentUserId ? (
+        <div className="btn-box">
+          <Button className="go-edit-btn" onClick={() => goEdit()}>
+            編集
+          </Button>
+        </div>
+      ) : null}
     </div>
   );
 };

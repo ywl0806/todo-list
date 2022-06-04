@@ -28,12 +28,13 @@ export const todoList = async (req, res) => {
     const taskList = await Task.find({
       $and: [
         { isRemoved: false },
-        { isCompleted },
+        { isCompleted: isCompleted ? { $exists: true } : false },
         { deadLine: deadLineOverdue ? { $lt: Date.now() } : { $ne: 1 } },
         {
           $or: [
             { title: { $regex: keyword || "" } },
             { content: { $regex: keyword || "" } },
+            { "writer.name": { $regex: keyword || "" } },
           ],
         },
       ],
@@ -67,4 +68,23 @@ export const editTask = async (req, res) => {
     console.log(error);
   }
   return;
+};
+export const removeTask = async (req, res) => {
+  const { id, writerId } = req.body;
+  const userId = req.session.user._id;
+
+  if (writerId !== userId) {
+    return res.status(404).json({
+      errorMessage: "作成者本人ではありません",
+      status: "404",
+    });
+  }
+  const result = await Task.findByIdAndUpdate(id, {
+    isRemoved: true,
+  });
+  console.log(`${result.title} remove`);
+
+  return res.status(200).json({
+    message: "remove success",
+  });
 };

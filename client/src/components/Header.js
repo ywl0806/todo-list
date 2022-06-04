@@ -1,7 +1,16 @@
+import { Container, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../reducers/sessionSlice";
 import { destroyTask } from "../reducers/taskSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faRightFromBracket,
+  faRightToBracket,
+  faPeopleGroup,
+  faList,
+} from "@fortawesome/free-solid-svg-icons";
+import ReactTooltip from "react-tooltip";
 const Header = () => {
   const loggedIn = useSelector((state) => state.persist.session.loggedIn);
   const dispatch = useDispatch();
@@ -11,28 +20,56 @@ const Header = () => {
   };
   return (
     <header>
-      <h3> 헤더 </h3>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        {loggedIn ? (
+      <Navbar>
+        <Container>
+          <Link to="/" className="navbar-brand ">
+            <h3 data-tip="Go Home" className="font-monospace fs-2 fw-bold">
+              <FontAwesomeIcon icon={faList} />
+              {"  "}TODO LIST
+            </h3>
+            <ReactTooltip effect="float" type="info" place="right" />
+          </Link>
           <div>
-            <Link to="/" onClick={() => logoutHandler()}>
-              Logout
-            </Link>
+            {loggedIn ? (
+              <div>
+                <div>
+                  <Link to="/" onClick={() => logoutHandler()}>
+                    <FontAwesomeIcon
+                      icon={faRightFromBracket}
+                      size={"3x"}
+                      data-tip="Logout"
+                    />
+                    <ReactTooltip effect="float" type="info" place="right" />
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div>
+                  <Link to="/login">
+                    <FontAwesomeIcon
+                      icon={faRightToBracket}
+                      size={"3x"}
+                      data-tip="Login"
+                    />
+                    <ReactTooltip effect="float" type="info" place="right" />
+                  </Link>
+                </div>
+                <div>
+                  <Link to="/join">
+                    <FontAwesomeIcon
+                      icon={faPeopleGroup}
+                      size={"3x"}
+                      data-tip="Sign Up"
+                    />
+                    <ReactTooltip effect="float" type="info" place="right" />
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
-        ) : (
-          <div>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/join">Join</Link>
-            </li>
-          </div>
-        )}
-      </ul>
+        </Container>
+      </Navbar>
     </header>
   );
 };

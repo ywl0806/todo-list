@@ -3,11 +3,9 @@ import { Route, Routes } from "react-router-dom";
 
 function PrivateRoute() {
   return (
-    <div>
-      <Routes>
-        <Route path="/" exact element={<Home />}></Route>
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" exact element={<Home />}></Route>
+    </Routes>
   );
 }
 

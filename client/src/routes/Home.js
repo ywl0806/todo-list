@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CreateTask from "../components/CreateTask";
 import TaskDetail from "../components/TaskDetail";
@@ -6,10 +5,17 @@ import TodoList from "../components/TodoList";
 import EditTask from "../components/EditTask";
 import { modeChange, unSelectTask } from "../reducers/taskSlice";
 import Login from "./Login";
-
+import { Alert, Col, Row } from "react-bootstrap";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import "./Home.css";
+import { welcomeMessage } from "../reducers/sessionSlice";
 const Home = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.persist.session);
+  const [show, setShow] = useState(true);
+  const welcome = user.welcome;
   const onClickPlusBtn = () => {
     dispatch(modeChange("create"));
     dispatch(unSelectTask());
@@ -17,32 +23,54 @@ const Home = () => {
   const mode = useSelector((state) => state.task.currentMode);
   return (
     <div>
-      <h3> Home </h3>
-      <div>
-        {user.loggedIn ? <h1>{user.name}님 환영합니다!!</h1> : <Login />}
-        {user.loggedIn ? (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateRows: "400px 400px",
-              gridTemplateColumns: "400px 400px",
+      {user.loggedIn ? (
+        <div>
+          <Alert
+            show={show && welcome}
+            onClose={() => {
+              setShow(false);
+              dispatch(welcomeMessage());
             }}
+            variant="success"
+            dismissible
           >
+            <Alert.Heading>Welcome {user.name} !</Alert.Heading>
+          </Alert>
+        </div>
+      ) : (
+        <Login />
+      )}
+      {user.loggedIn ? (
+        <Row className="home-container">
+          <Col className="home-content">
             <TodoList />
-
-            {mode === "detail" ? (
+          </Col>
+          {mode === "detail" ? (
+            <Col className="home-content">
               <TaskDetail />
-            ) : mode === "create" ? (
+            </Col>
+          ) : mode === "create" ? (
+            <Col className="home-content">
               <CreateTask />
-            ) : mode === "edit" ? (
+            </Col>
+          ) : mode === "edit" ? (
+            <Col className="home-content">
               <EditTask />
-            ) : null}
-            {user.loggedIn && mode !== "create" ? (
-              <button onClick={() => onClickPlusBtn()}>todo 추가</button>
-            ) : null}
-          </div>
-        ) : null}
-      </div>
+            </Col>
+          ) : null}
+          {user.loggedIn && mode !== "create" ? (
+            <div>
+              <button
+                className="btn btn-primary"
+                onClick={() => onClickPlusBtn()}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+                　　タスク追加
+              </button>
+            </div>
+          ) : null}
+        </Row>
+      ) : null}
     </div>
   );
 };

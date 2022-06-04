@@ -8,6 +8,7 @@ export const taskSlice = createSlice({
     currentTaskIndex: null,
     //mode: create, detail, edit
     currentMode: "",
+    removed: false,
   },
   reducers: {
     setTask: (state, action) => {
@@ -22,7 +23,7 @@ export const taskSlice = createSlice({
       state.currentTaskIndex = null;
     },
     destroyTask: (state) => {
-      state = [];
+      state.taskList = [];
       state.currentTaskDetail = {};
       state.currentTaskIndex = null;
     },
@@ -43,6 +44,10 @@ export const taskSlice = createSlice({
     modeChange: (state, action) => {
       state.currentMode = action.payload;
     },
+    removeTask: (state) => {
+      state.removed = !state.removed;
+      state.currentMode = "";
+    },
   },
 });
 
@@ -54,6 +59,7 @@ export const {
   unSelectTask,
   updateTask,
   modeChange,
+  removeTask,
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

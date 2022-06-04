@@ -91,9 +91,7 @@ export const emailVerification = async (req, res) => {
     //homeへ移動
     return res.redirect("/");
   }
-  console.log(user);
-  req.session.user = user;
-  req.session.loggedIn = true;
+
   return res.redirect("/");
 };
 

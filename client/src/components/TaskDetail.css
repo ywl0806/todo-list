@@ -1,0 +1,32 @@
+.row-content {
+  height: 170px;
+}
+.detail-container {
+  padding: 10px;
+  padding-top: 20px;
+}
+.item-value {
+  box-shadow: 1px 2px 5px -3px black;
+  border-radius: 5px;
+  background-color: rgba(179, 179, 179, 0.068);
+}
+.complete,
+.incomplete {
+  text-align: center;
+}
+.complete {
+  background-color: #48dafb2f;
+}
+.incomplete {
+  background-color: #ee525249;
+}
+.btn-box {
+  display: flex;
+  justify-content: end;
+}
+.go-edit-btn {
+  border-radius: 50px;
+}
+.detail-container .row {
+  margin-bottom: 30px;
+}

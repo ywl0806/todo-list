@@ -3,6 +3,8 @@ import Header from "./components/Header";
 import { useSelector } from "react-redux";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
+import { Container } from "react-bootstrap";
+import Footer from "./components/Footer";
 
 function App() {
   const user = useSelector((state) => state.persist.session);
@@ -10,7 +12,10 @@ function App() {
   return (
     <div>
       <Header />
-      <main>{user.loggedIn ? <PrivateRoute /> : <PublicRoute />}</main>
+      <Container className="mt-5 mb-5">
+        <main>{user.loggedIn ? <PrivateRoute /> : <PublicRoute />}</main>
+      </Container>
+      <Footer />
     </div>
   );
 }
