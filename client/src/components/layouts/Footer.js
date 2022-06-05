@@ -4,7 +4,9 @@ const Footer = () => {
       <hr />
       <div className="row text-center">
         <div className="col">
-          <span id="footer__text"></span>
+          <span id="footer__text">
+            ToDo List {new Date().getFullYear()} &copy;
+          </span>
         </div>
       </div>
     </div>

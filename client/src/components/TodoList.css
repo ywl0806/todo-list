@@ -39,3 +39,11 @@
     background-color: rgba(13, 110, 253, 0.397);
   }
 }
+.comp {
+  font-weight: 1000;
+  color: #3742fa;
+}
+.incomp {
+  font-weight: 1000;
+  color: #ff4757;
+}

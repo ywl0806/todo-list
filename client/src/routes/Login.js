@@ -5,7 +5,6 @@ import { request } from "../utils/axios";
 import { useFormik } from "formik";
 import { loginSchema } from "../utils/validationSchema";
 import { Button, Col, Form, Row } from "react-bootstrap";
-
 const Login = () => {
   const navigete = useNavigate();
   const dispatch = useDispatch();
@@ -20,10 +19,14 @@ const Login = () => {
       const loginUrl = "/user/login";
       try {
         const res = await request("post", loginUrl, data);
-        console.log(res.user);
-        dispatch(setUser(res.user));
-        //ログイン成功時
-        navigete("/");
+        if (!res.ok) {
+          //ログイン失敗時
+          alert(res.message);
+        } else {
+          //ログイン成功時
+          dispatch(setUser(res.user));
+          navigete("/");
+        }
       } catch (error) {
         //ログイン失敗時
         console.log(error);
@@ -34,7 +37,7 @@ const Login = () => {
   return (
     <Row className="justify-content-xl-center">
       <Col md="5 form-container">
-        <h3 className="font-weight-bold"> login </h3>
+        <h3 className="font-weight-bold"> ログイン </h3>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group className="md-3 mt-3 p-1">
             <Form.Label id="email">メールアドレス</Form.Label>
@@ -71,7 +74,7 @@ const Login = () => {
           </Form.Group>
 
           <Form.Group className="mt-3">
-            <Button type="submit">login</Button>
+            <Button type="submit">ログイン</Button>
           </Form.Group>
         </Form>
       </Col>

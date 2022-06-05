@@ -1,10 +1,9 @@
-import Header from "./components/Header";
-
+import Header from "./components/layouts/Header";
 import { useSelector } from "react-redux";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 import { Container } from "react-bootstrap";
-import Footer from "./components/Footer";
+import Footer from "./components/layouts/Footer";
 
 function App() {
   const user = useSelector((state) => state.persist.session);

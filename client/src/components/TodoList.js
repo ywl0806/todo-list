@@ -14,11 +14,14 @@ import "./TodoList.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 const TodoList = () => {
-  const taskList = useSelector((state) => state.task.taskList);
   const dispatch = useDispatch();
-  const removed = useSelector((state) => state.task.removed);
 
+  //selectors
+  const taskList = useSelector((state) => state.task.taskList);
+  const removed = useSelector((state) => state.task.removed);
   const selectedTask = useSelector((state) => state.task.currentTaskDetail);
+  const mode = useSelector((state) => state.task.currentMode);
+
   //完了済み
   const [isCompleted, setIsCompleted] = useState(false);
   const handleIsCompleted = () => setIsCompleted(!isCompleted);
@@ -30,12 +33,14 @@ const TodoList = () => {
   //検索keyword
   const [keyword, setKeyword] = useState("");
   const handleKeyword = (e) => setKeyword(e.target.value);
+
   //現在のtask list
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
   const itemsPerPage = 5;
 
+  //load list
   useEffect(() => {
     const req = async () => {
       const payload = await request("post", "/task/todolist", {
@@ -52,6 +57,7 @@ const TodoList = () => {
     }
   }, [isCompleted, deadLineOverdue, keyword, removed, dispatch]);
 
+  // pagination
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(taskList.slice(itemOffset, endOffset));
@@ -61,18 +67,6 @@ const TodoList = () => {
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % taskList.length;
     setItemOffset(newOffset);
-  };
-
-  const onClickTask = (task, index) => {
-    dispatch(selectTask({ task, index: index + itemOffset }));
-
-    console.log(`${task.title} is selected`);
-  };
-  const dateFormat = (IsoDate) => {
-    const dt = moment.utc(IsoDate).toDate();
-    const localDate = moment(dt).local().format("YYYY-MM-DD HH:mm:ss");
-
-    return localDate;
   };
   const Items = ({ currentItems }) => {
     return (
@@ -86,13 +80,44 @@ const TodoList = () => {
           onClick={(event) => onClickTask(task, index, event)}
         >
           <span className="col task-item">{task.writer.name}</span>
-          <span className="col task-item">{task.title} </span>
+          <span className="col task-item">{task.title}</span>
+
+          {mode === "" ? (
+            <>
+              <span className="col task-item">
+                {task.content.length > 10
+                  ? task.content.slice(0, 10) + "..."
+                  : task.content}
+              </span>
+
+              {task.isCompleted ? (
+                <span className="col task-item comp">完了</span>
+              ) : (
+                <span className="col task-item incomp">未対応</span>
+              )}
+            </>
+          ) : null}
           <span className="col task-item">
             {task.deadLine ? dateFormat(task.deadLine).slice(0, 10) : "-"}
           </span>
         </div>
       ))
     );
+  };
+
+  //task click event
+  const onClickTask = (task, index) => {
+    dispatch(selectTask({ task, index: index + itemOffset }));
+
+    console.log(`${task.title} is selected`);
+  };
+
+  //util
+  const dateFormat = (IsoDate) => {
+    const dt = moment.utc(IsoDate).toDate();
+    const localDate = moment(dt).local().format("YYYY-MM-DD HH:mm:ss");
+
+    return localDate;
   };
 
   return (
@@ -131,9 +156,15 @@ const TodoList = () => {
       </ButtonGroup>
       <div>
         <div className="row border-bottom mb-3">
-          <span className="col">writer</span>
-          <span className="col">title</span>
-          <span className="col">dead line</span>
+          <span className="col">作成者</span>
+          <span className="col">タイトル</span>
+          {mode === "" ? (
+            <>
+              <span className="col">内容</span>
+              <span className="col">ステータス</span>
+            </>
+          ) : null}
+          <span className="col">期限</span>
         </div>
         <Items currentItems={currentItems} />
         <ReactPaginate

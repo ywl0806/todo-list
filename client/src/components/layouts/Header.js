@@ -1,8 +1,8 @@
 import { Container, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { logout } from "../reducers/sessionSlice";
-import { destroyTask } from "../reducers/taskSlice";
+import { logout } from "../../reducers/sessionSlice";
+import { destroyTask } from "../../reducers/taskSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faRightFromBracket,

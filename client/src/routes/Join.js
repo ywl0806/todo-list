@@ -15,14 +15,16 @@ const Join = () => {
     validationSchema: joinSchema,
     onSubmit: async (values) => {
       try {
-        console.log("ddd");
-        const result = await request("post", "/user/join", values);
-        console.log(result);
-        if (result.go) {
+        const res = await request("post", "/user/join", values);
+        if (res.ok) {
+          //登録成功
           navigate("/checkMail", {
             state: { email: values.email, name: values.name },
             replace: true,
           });
+        } else {
+          //登録失敗
+          alert(res.message);
         }
       } catch (error) {
         console.log(error);

@@ -2,21 +2,41 @@ import User from "../model/User";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import { send } from "process";
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
     console.log("email is not exists");
-    return;
+    return res.json({
+      ok: false,
+      message:
+        "メールアドレスが存在しません。\nメールアドレスを確認してください。",
+    });
   }
 
   const go = await bcrypt.compare(password, user.password);
 
   if (!go) {
     console.log("password is not equal");
-    return;
+    return res.json({
+      ok: false,
+      message: "パスワードが一致しません。",
+    });
   }
+
+  if (!user.email_verified) {
+    console.log("Email not authenticated");
+    const authUrl = `http://${req.headers.host}/user/email_verification?key=${user.key_for_verify}`;
+    const mailText = `${user.name}さん<br/>こんにちは!<br/><br/>こちらのURLから進んでください。<br/> ${authUrl}`;
+    sendMail(user.email, mailText);
+    return res.json({
+      ok: false,
+      message: `メールアドレス認証がされてないです。\n${user.email}\nこちらのメールアドレスに認証メールを送ります。`,
+    });
+  }
+
   console.log("login success");
   req.session.user = user;
   req.session.loggedIn = true;
@@ -25,6 +45,7 @@ export const login = async (req, res) => {
 
   return res.json({
     message: "login success",
+    ok: true,
     user: {
       name: user.name,
       email: user.email,
@@ -55,7 +76,10 @@ export const join = async (req, res) => {
 
   if (exists) {
     console.log("email already exists");
-    return;
+    return res.json({
+      ok: false,
+      message: "既に登録されたメールアドレスがあります。",
+    });
   }
 
   const key_for_verify = crypto.randomBytes(8).toString("hex");
@@ -81,17 +105,21 @@ export const join = async (req, res) => {
 };
 export const emailVerification = async (req, res) => {
   const { key } = req.query;
-  const user = await User.findOne({ key_for_verify: key });
-  console.log(key);
-  // 既にmail認証済みのuser
+  const user = await User.findOneAndUpdate(
+    { key_for_verify: key },
+    { email_verified: true }
+  );
   if (user === null) {
     return;
   }
+  // 既にmail認証済みのuser
   if (user.email_verified == true) {
     //homeへ移動
     return res.redirect("/");
   }
-
+  const url = `http://${req.headers.host}`;
+  const mailText = `${user.name}さん<br/>ようこそ！！<br/> 登録が終わりました。<br/><br/>${url} `;
+  sendMail(user.email, mailText);
   return res.redirect("/");
 };
 
