@@ -4,7 +4,7 @@
   "description": "Manage your tasks",
   "main": "index.js",
   "scripts": {
-    "server": "cross-env NODE_ENV=production --exec babel-node server/init.js",
+    "server": "cross-env NODE_ENV=production babel-node server/init.js",
     "dev:server": "cross-env NODE_ENV=development nodemon --exec babel-node server/init.js",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\""

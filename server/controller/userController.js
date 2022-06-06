@@ -95,8 +95,8 @@ export const join = async (req, res) => {
     sendMail(email, mailText);
 
     return res.json({
-      message: "success",
-      go: true,
+      message: "pls check mail",
+      ok: true,
     });
   } catch (error) {
     console.log(error);
