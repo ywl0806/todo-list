@@ -126,12 +126,17 @@ export const emailVerification = async (req, res) => {
 const sendMail = (email, mailText) => {
   const transpoter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 587,
+    port: 465,
     secure: true,
     service: "gmail",
     auth: {
+      type: "OAuth2",
       user: process.env.GOOGLE_EMAIL,
-      pass: process.env.GOOGLE_PASS,
+      clientId: process.env.MAILER_CLIENT_ID,
+      clientSecret: process.env.MAILER_CLIENT_PWD,
+      accessToken: process.env.MAILER_ACCTKN,
+      refreshToken: process.env.MAILER_REFTKN,
+      expires: 1484314697598,
     },
   });
 
