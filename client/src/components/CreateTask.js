@@ -77,7 +77,7 @@ const CreateTask = () => {
             <input
               className="form-control"
               id="deadLine"
-              type="datetime-local"
+              type="date"
               name="deadLine"
               value={formik.values.deadLine}
               onChange={formik.handleChange}

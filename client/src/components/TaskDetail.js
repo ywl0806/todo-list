@@ -14,7 +14,7 @@ const TaskDetail = () => {
 
   const dateFormat = (IsoDate) => {
     const dt = moment.utc(IsoDate).toDate();
-    const localDate = moment(dt).local().format("YYYY-MM-DD HH:mm:ss");
+    const localDate = moment(dt).local().format("YYYY-MM-DD");
 
     return localDate;
   };
