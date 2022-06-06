@@ -125,6 +125,9 @@ export const emailVerification = async (req, res) => {
 
 const sendMail = (email, mailText) => {
   const transpoter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
     service: "gmail",
     auth: {
       user: process.env.GOOGLE_EMAIL,
